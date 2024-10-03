@@ -5,7 +5,6 @@ import { fetchImages } from './js/pixabay-api.js';
 import { renderGallery } from './js/render-functions.js';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-
 const searchForm = document.getElementById('searchForm');
 const gallery = document.querySelector('.gallery');
 const loader = document.getElementById('loader');
@@ -31,13 +30,11 @@ searchForm.addEventListener('submit', async event => {
 
   const query = document.getElementById('query').value.trim();
 
-  if(query !== currentQuery) {
+  if (query !== currentQuery) {
     currentQuery = query;
     currentPage = 1;
     clearGallery();
   }
-
-  if(!query)
 
   if (!query) {
     iziToast.show({
@@ -53,19 +50,27 @@ searchForm.addEventListener('submit', async event => {
   toggleLoader(true);
 
   try {
-    const data = await fetchImages(query);
-    renderGallery(data.hits);
+    const data = await fetchImages(currentQuery, currentPage, perPage);
+    if (data.his.length === 0) {
+      iziToast.show({
+        title: 'Warning',
+        message: 'Please enter a search query!',
+        color: 'yellow',
+        position: 'topRight',
+      });
+    } else {
+      renderGallery(data.hits);
+      currentPage++;
+    }
   } catch (error) {
-    console.error(error);
+    console.log(error);
     iziToast.show({
-      title: 'Warning',
-      message: 'Please enter a search query!',
+      title: 'Error',
+      message: 'Failed to load images!',
       color: 'red',
       position: 'topRight',
     });
-  } finally {
+  }finally {
     toggleLoader(false);
   }
 });
-
-
