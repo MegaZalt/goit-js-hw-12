@@ -1,5 +1,5 @@
 import SimpleLightbox from 'simplelightbox';
-import '/dist/simple-lightbox.min.css';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
 let lightbox = null;
 
