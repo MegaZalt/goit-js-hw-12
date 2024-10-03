@@ -94,6 +94,8 @@ loadMoreBtn.addEventListener('click', async () => {
         if(data.hits.length > 0) {
             appendGallery(data.hits);
             currentPage++;
+        } else {
+            toggleLoaderButton(false);
         }
 
         if(data.hits.length < perPage) {

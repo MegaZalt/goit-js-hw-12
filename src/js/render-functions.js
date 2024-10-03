@@ -1,4 +1,3 @@
-import simpleLightbox from 'simplelightbox';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
@@ -42,16 +41,11 @@ export function appendGallery(images) {
         </a>
       </div>`;
   })
-  join('');
+  .join('');
 
   gallery.insertAdjacentHTML('beforeend', markup);
 
-  if (!lightbox) {
-    lightbox = new simpleLightbox('.gallery a', {
-      captionsData: 'alt',
-      captionDelay: 250,
-    });
-  } else {
+  if(lightbox) {
     lightbox.refresh();
   }
 }
