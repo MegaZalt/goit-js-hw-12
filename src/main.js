@@ -10,6 +10,10 @@ const searchForm = document.getElementById('searchForm');
 const gallery = document.querySelector('.gallery');
 const loader = document.getElementById('loader');
 
+let currentQuery = '';
+let currentPage = 1;
+const perPage = 15;
+
 function toggleLoader(isVisible) {
   if (isVisible) {
     loader.classList.remove('hidden');
@@ -26,6 +30,14 @@ searchForm.addEventListener('submit', async event => {
   event.preventDefault();
 
   const query = document.getElementById('query').value.trim();
+
+  if(query !== currentQuery) {
+    currentQuery = query;
+    currentPage = 1;
+    clearGallery();
+  }
+
+  if(!query)
 
   if (!query) {
     iziToast.show({
