@@ -3,7 +3,7 @@ import '/dist/simple-lightbox.min.css';
 
 let lightbox = null;
 
-export function simplelightbox renderGallery(images) { 
+export function renderGallery(images) { 
   const gallery = document.querySelector('.gallery');
   gallery.innerHTML = '';
 
