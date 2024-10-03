@@ -4,10 +4,12 @@ import iziToast from 'izitoast';
 import { fetchImages } from './js/pixabay-api.js';
 import { renderGallery } from './js/render-functions.js';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+import axios from 'axios';
 
 const searchForm = document.getElementById('searchForm');
 const gallery = document.querySelector('.gallery');
 const loader = document.getElementById('loader');
+const loadMoreBtn = document.getElementById('loadMoreBtn');
 
 let currentQuery = '';
 let currentPage = 1;
@@ -19,6 +21,14 @@ function toggleLoader(isVisible) {
   } else {
     loader.classList.add('hidden');
   }
+}
+
+function toggleLoaderButton(isVisible) {
+    if (isVisible) {
+        loadMoreBtn.classList.remove('hidden');
+      } else {
+        loadMoreBtn.classList.add('hidden');
+      }
 }
 
 function clearGallery() {
@@ -61,6 +71,7 @@ searchForm.addEventListener('submit', async event => {
     } else {
       renderGallery(data.hits);
       currentPage++;
+      toggleLoaderButton(true);
     }
   } catch (error) {
     console.log(error);
@@ -73,4 +84,31 @@ searchForm.addEventListener('submit', async event => {
   }finally {
     toggleLoader(false);
   }
+});
+
+loadMoreBtn.addEventListener('click', async () => {
+    toggleLoader(true);
+
+    try {
+        const data = await fetchImages(currentQuery, currentPage, perPage);
+
+        if(data.hits.length > 0) {
+            appendGallery(data.hits);
+            currentPage++;
+        }
+
+        if(data.hits.length < perPage) {
+            toggleLoaderButton(false);
+        }
+    } catch (error) {
+        console.log('Error loading more images:', error);
+        iziToast.show({
+            title: 'Error',
+            message: 'Could not load more images. Please try again later.',
+            color: 'red',
+            position: 'topRight',
+        });
+    } finally {
+        toggleLoader(false);
+    }
 });
