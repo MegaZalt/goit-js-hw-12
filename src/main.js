@@ -2,7 +2,7 @@
 import 'izitoast/dist/css/iziToast.css';
 import iziToast from 'izitoast';
 import { fetchImages } from './js/pixabay-api.js';
-import { renderGallery } from './js/render-functions.js';
+import { renderGallery, appendGallery } from './js/render-functions.js';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const searchForm = document.getElementById('searchForm');
@@ -62,7 +62,6 @@ searchForm.addEventListener('submit', async event => {
   try {
     const data = await fetchImages(currentQuery, currentPage, perPage);
     totalHits = data.totalHits;
-  }
 
     if (data.hits.length === 0) {
       iziToast.show({
@@ -71,18 +70,13 @@ searchForm.addEventListener('submit', async event => {
         color: 'yellow',
         position: 'topRight',
       });
-    } else {
-      renderGallery(data.hits);
-      currentPage++;
-      toggleLoaderButton(true);
+      return;
     }
 
-    if(currentPage * perPage >= totalHits) {
-        toggleLoaderButton(false);
-        const message = document.createElement('p');
-        message.textContent = "We're sorry, but you've reached the end of search results.";
-        gallery.appendChild(message);
-    }
+    renderGallery(data.hits);
+    currentPage++;
+    toggleLoaderButton(totalHits > perPage);
+
   } catch (error) {
     console.log(error);
     iziToast.show({
@@ -105,13 +99,15 @@ loadMoreBtn.addEventListener('click', async () => {
         if(data.hits.length > 0) {
             appendGallery(data.hits);
             currentPage++;
-        } else {
-            toggleLoaderButton(false);
-        }
+        } 
 
-        if(data.hits.length < perPage) {
+        if(currentPage * perPage >= totalHits) {
             toggleLoaderButton(false);
+            const message = document.createElement('p');
+            message.textContent = "We're sorry, but you've reached the end of search results.";
+            gallery.appendChild(message);
         }
+        
     } catch (error) {
         console.log('Error loading more images:', error);
         iziToast.show({
@@ -124,3 +120,5 @@ loadMoreBtn.addEventListener('click', async () => {
         toggleLoader(false);
     }
 });
+
+
