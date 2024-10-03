@@ -13,6 +13,7 @@ const loadMoreBtn = document.getElementById('loadMoreBtn');
 let currentQuery = '';
 let currentPage = 1;
 const perPage = 15;
+let totalHits = 0;
 
 function toggleLoader(isVisible) {
   if (isVisible) {
@@ -60,6 +61,9 @@ searchForm.addEventListener('submit', async event => {
 
   try {
     const data = await fetchImages(currentQuery, currentPage, perPage);
+    totalHits = data.totalHits;
+  }
+
     if (data.hits.length === 0) {
       iziToast.show({
         title: 'Warning',
@@ -71,6 +75,13 @@ searchForm.addEventListener('submit', async event => {
       renderGallery(data.hits);
       currentPage++;
       toggleLoaderButton(true);
+    }
+
+    if(currentPage * perPage >= totalHits) {
+        toggleLoaderButton(false);
+        const message = document.createElement('p');
+        message.textContent = "We're sorry, but you've reached the end of search results.";
+        gallery.appendChild(message);
     }
   } catch (error) {
     console.log(error);
