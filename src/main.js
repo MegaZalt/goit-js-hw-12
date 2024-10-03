@@ -61,7 +61,7 @@ searchForm.addEventListener('submit', async event => {
 
   try {
     const data = await fetchImages(currentQuery, currentPage, perPage);
-    if (data.his.length === 0) {
+    if (data.hits.length === 0) {
       iziToast.show({
         title: 'Warning',
         message: 'Please enter a search query!',
