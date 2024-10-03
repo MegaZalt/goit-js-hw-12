@@ -41,7 +41,7 @@ export function appendGallery(images) {
           <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy" />
         </a>
       </div>`;
-  });
+  })
   join('');
 
   gallery.insertAdjacentHTML('beforeend', markup);

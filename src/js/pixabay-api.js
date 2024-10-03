@@ -9,7 +9,7 @@ export async function fetchImages(query, page = 1, perPage = 15) {
   try {
     const response = await axios.get(url);
     return response.data;
-  } catch {
+  } catch (error) {
     console.log('Error fetching images:', error);
     throw error;
   }

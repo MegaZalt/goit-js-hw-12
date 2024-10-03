@@ -4,7 +4,6 @@ import iziToast from 'izitoast';
 import { fetchImages } from './js/pixabay-api.js';
 import { renderGallery } from './js/render-functions.js';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import axios from 'axios';
 
 const searchForm = document.getElementById('searchForm');
 const gallery = document.querySelector('.gallery');
@@ -56,8 +55,8 @@ searchForm.addEventListener('submit', async event => {
     return;
   }
 
-  clearGallery();
   toggleLoader(true);
+  toggleLoaderButton(false)
 
   try {
     const data = await fetchImages(currentQuery, currentPage, perPage);
