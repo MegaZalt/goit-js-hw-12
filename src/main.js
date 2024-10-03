@@ -77,6 +77,8 @@ searchForm.addEventListener('submit', async event => {
     currentPage++;
     toggleLoaderButton(totalHits > perPage);
 
+    scrollPage();
+
   } catch (error) {
     console.log(error);
     iziToast.show({
@@ -90,6 +92,17 @@ searchForm.addEventListener('submit', async event => {
   }
 });
 
+function scrollPage() {
+    const galleryItem = document.querySelector('.gallery-item');
+    if(galleryItem) {
+        const { height } = galleryItem.getBoundingClientRect();
+        window.scrollBy({
+            top: height * 2,
+            behavior: 'smooth',
+        })
+    }
+}
+
 loadMoreBtn.addEventListener('click', async () => {
     toggleLoader(true);
 
@@ -99,6 +112,7 @@ loadMoreBtn.addEventListener('click', async () => {
         if(data.hits.length > 0) {
             appendGallery(data.hits);
             currentPage++;
+            scrollPage();
         } 
 
         if(currentPage * perPage >= totalHits) {
