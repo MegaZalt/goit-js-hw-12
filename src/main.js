@@ -41,6 +41,7 @@ searchForm.addEventListener('submit', async event => {
   const query = document.getElementById('query').value.trim();
 
   toggleLoaderButton(false);
+  clearEndMessage();
 
   if (query !== currentQuery) {
     currentQuery = query;
@@ -59,7 +60,6 @@ searchForm.addEventListener('submit', async event => {
   }
 
   toggleLoader(true);
-  toggleLoaderButton(false)
 
   try {
     const data = await fetchImages(currentQuery, currentPage, perPage);
@@ -77,8 +77,12 @@ searchForm.addEventListener('submit', async event => {
 
     renderGallery(data.hits);
     currentPage++;
-    const isMoreImage = (currentPage * perPage < totalHits);
-    toggleLoaderButton(isMoreImages);
+    
+    if(currentPage * perPage < totalHits) {
+      toggleLoaderButton(true);
+    }else {
+      showEndMessage();
+    }
 
     scrollPage();
 
@@ -95,17 +99,6 @@ searchForm.addEventListener('submit', async event => {
   }
 });
 
-function scrollPage() {
-    const galleryItem = document.querySelector('.gallery-item');
-    if(galleryItem) {
-        const { height } = galleryItem.getBoundingClientRect();
-        window.scrollBy({
-            top: height * 2,
-            behavior: 'smooth',
-        })
-    }
-}
-
 loadMoreBtn.addEventListener('click', async () => {
     toggleLoader(true);
 
@@ -118,14 +111,9 @@ loadMoreBtn.addEventListener('click', async () => {
             scrollPage();
         } 
 
-        const isMoreImage = currentPage * perPage >= totalHits;
-        toggleLoaderButton(isMoreImage);
-
-        if(!isMoreImage) {
-            const message = document.createElement('p');
-            message.textContent = "We're sorry, but you've reached the end of search results.";
-            message.classList.add('end-message');
-            gallery.appendChild(message);
+        if(currentPage * perPage >= totalHits) {
+          toggleLoaderButton(false);
+          showEndMessage();
         } else {
           toggleLoaderButton(true);
         }
@@ -143,4 +131,27 @@ loadMoreBtn.addEventListener('click', async () => {
     }
 });
 
+function scrollPage() {
+  const galleryItem = document.querySelector('.gallery-item');
+  if(galleryItem) {
+      const { height } = galleryItem.getBoundingClientRect();
+      window.scrollBy({
+          top: height * 2,
+          behavior: 'smooth',
+      })
+  }
+}
 
+function showEndMessage() {
+  const message = document.createElement('p');
+  message.textContent = "We're sorry, but you've reached the end of search results.";
+  message.classList.add('end-message');
+  gallery.appendChild(message);
+}
+
+function clearEndMessage() {
+  const endMessage = document.querySelector('.end-message');
+  if(endMessage) {
+    endMessage.remove();
+  }
+}
