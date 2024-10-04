@@ -40,6 +40,8 @@ searchForm.addEventListener('submit', async event => {
 
   const query = document.getElementById('query').value.trim();
 
+  toggleLoaderButton(false);
+
   if (query !== currentQuery) {
     currentQuery = query;
     currentPage = 1;
@@ -75,7 +77,8 @@ searchForm.addEventListener('submit', async event => {
 
     renderGallery(data.hits);
     currentPage++;
-    toggleLoaderButton(currentPage * perPage < totalHits);
+    const isMoreImage = (currentPage * perPage < totalHits);
+    toggleLoaderButton(isMoreImages);
 
     scrollPage();
 
@@ -115,8 +118,10 @@ loadMoreBtn.addEventListener('click', async () => {
             scrollPage();
         } 
 
-        if(currentPage * perPage >= totalHits) {
-            toggleLoaderButton(false);
+        const isMoreImage = currentPage * perPage >= totalHits;
+        toggleLoaderButton(isMoreImage);
+
+        if(!isMoreImage) {
             const message = document.createElement('p');
             message.textContent = "We're sorry, but you've reached the end of search results.";
             message.classList.add('end-message');
