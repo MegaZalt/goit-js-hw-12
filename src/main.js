@@ -75,7 +75,7 @@ searchForm.addEventListener('submit', async event => {
 
     renderGallery(data.hits);
     currentPage++;
-    toggleLoaderButton(totalHits > perPage);
+    toggleLoaderButton(currentPage * perPage < totalHits);
 
     scrollPage();
 
@@ -119,7 +119,10 @@ loadMoreBtn.addEventListener('click', async () => {
             toggleLoaderButton(false);
             const message = document.createElement('p');
             message.textContent = "We're sorry, but you've reached the end of search results.";
+            message.classList.add('end-message');
             gallery.appendChild(message);
+        } else {
+          toggleLoaderButton(true);
         }
         
     } catch (error) {
