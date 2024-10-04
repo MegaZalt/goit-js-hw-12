@@ -58,7 +58,6 @@ body {
 }
 
 #loadMoreBtn {
-  display: none;
   margin: 20px auto;
   padding: 10px 20px;
   background-color: #207ada;
@@ -80,9 +79,6 @@ body {
   text-align: center;
 }
 
-.hidden {
-  display: none;
-}
 
 .gallery p {
   margin: 20px 0;
