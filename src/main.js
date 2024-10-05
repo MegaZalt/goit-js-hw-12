@@ -24,11 +24,11 @@ function toggleLoader(isVisible) {
 }
 
 function toggleLoaderButton(isVisible) {
-    if (isVisible) {
-        loadMoreBtn.classList.remove('hidden');
-      } else {
-        loadMoreBtn.classList.add('hidden');
-      }
+  if (isVisible) {
+    loadMoreBtn.classList.remove('hidden');
+  } else {
+    loadMoreBtn.classList.add('hidden');
+  }
 }
 
 function clearGallery() {
@@ -78,83 +78,87 @@ searchForm.addEventListener('submit', async event => {
 
     renderGallery(data.hits);
     currentPage++;
-    
-    if(currentPage * perPage < totalHits) {
+
+    if (currentPage * perPage < totalHits) {
       toggleLoaderButton(true);
-    }else {
+    } else {
       toggleLoaderButton(false);
       showEndMessage();
     }
 
     scrollPage();
-
   } catch (error) {
-    console.log(error);
+    console.error(error);
     iziToast.show({
       title: 'Error',
       message: 'Failed to load images!',
       color: 'red',
       position: 'topRight',
     });
-  }finally {
+  } finally {
     toggleLoader(false);
   }
 });
 
 loadMoreBtn.addEventListener('click', async () => {
-    toggleLoader(true);
-    toggleLoaderButton(false);
+  toggleLoader(true);
+  toggleLoaderButton(false);
 
-    try {
-        const data = await fetchImages(currentQuery, currentPage, perPage);
+  try {
+    const data = await fetchImages(currentQuery, currentPage, perPage);
 
-        if(data.hits.length > 0) {
-            appendGallery(data.hits);
-            currentPage++;
-            scrollPage();
-        } 
-
-        if(currentPage * perPage >= totalHits) {
-          toggleLoaderButton(false);
-          showEndMessage();
-        } else {
-          toggleLoaderButton(true);
-        }
-        
-    } catch (error) {
-        console.log('Error loading more images:', error);
-        iziToast.show({
-            title: 'Error',
-            message: 'Could not load more images. Please try again later.',
-            color: 'red',
-            position: 'topRight',
-        });
-    } finally {
-        toggleLoader(false);
+    if (data.hits.length > 0) {
+      appendGallery(data.hits);
+      currentPage++;
+      scrollPage();
     }
+
+    if (currentPage * perPage >= totalHits) {
+      toggleLoaderButton(false);
+      showEndMessage();
+    } else {
+      toggleLoaderButton(true);
+    }
+  } catch (error) {
+    console.error('Error loading more images:', error);
+    iziToast.show({
+      title: 'Error',
+      message: 'Could not load more images. Please try again later.',
+      color: 'red',
+      position: 'topRight',
+    });
+  } finally {
+    toggleLoader(false);
+  }
 });
 
 function scrollPage() {
   const galleryItem = document.querySelector('.gallery-item');
-  if(galleryItem) {
-      const { height } = galleryItem.getBoundingClientRect();
-      window.scrollBy({
-          top: height * 2,
-          behavior: 'smooth',
-      })
+  if (galleryItem) {
+    const { height } = galleryItem.getBoundingClientRect();
+    window.scrollBy({
+      top: height * 2,
+      behavior: 'smooth',
+    });
+  } else {
+    window.scrollBy({
+      top: 100,
+      behavior: 'smooth',
+    });
   }
 }
 
 function showEndMessage() {
   const message = document.createElement('p');
-  message.textContent = "We're sorry, but you've reached the end of search results.";
+  message.textContent =
+    "We're sorry, but you've reached the end of search results.";
   message.classList.add('end-message');
   gallery.appendChild(message);
 }
 
 function clearEndMessage() {
   const endMessage = document.querySelector('.end-message');
-  if(endMessage) {
+  if (endMessage) {
     endMessage.remove();
   }
 }
