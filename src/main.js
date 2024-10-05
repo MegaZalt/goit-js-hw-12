@@ -40,7 +40,6 @@ searchForm.addEventListener('submit', async event => {
 
   const query = document.getElementById('query').value.trim();
 
-  toggleLoaderButton(false);
   clearEndMessage();
 
   if (query !== currentQuery) {
@@ -60,6 +59,7 @@ searchForm.addEventListener('submit', async event => {
   }
 
   toggleLoader(true);
+  toggleLoaderButton(false);
 
   try {
     const data = await fetchImages(currentQuery, currentPage, perPage);

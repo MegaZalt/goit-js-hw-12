@@ -86,3 +86,7 @@ body {
   text-align: center;
   color: #555;
 }
+
+.hidden {
+  display: none;
+}
