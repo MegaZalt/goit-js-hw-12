@@ -72,6 +72,7 @@ searchForm.addEventListener('submit', async event => {
         color: 'yellow',
         position: 'topRight',
       });
+      toggleLoaderButton(false);
       return;
     }
 
@@ -81,6 +82,7 @@ searchForm.addEventListener('submit', async event => {
     if(currentPage * perPage < totalHits) {
       toggleLoaderButton(true);
     }else {
+      toggleLoaderButton(false);
       showEndMessage();
     }
 
@@ -101,6 +103,7 @@ searchForm.addEventListener('submit', async event => {
 
 loadMoreBtn.addEventListener('click', async () => {
     toggleLoader(true);
+    toggleLoaderButton(false);
 
     try {
         const data = await fetchImages(currentQuery, currentPage, perPage);
