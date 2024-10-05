@@ -14,3 +14,4 @@ export async function fetchImages(query, page = 1, perPage = 15) {
     throw error;
   }
 }
+

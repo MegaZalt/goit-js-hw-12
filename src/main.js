@@ -51,7 +51,7 @@ searchForm.addEventListener('submit', async event => {
   if (!query) {
     iziToast.show({
       title: 'Warning',
-      message: 'Please enter a search query!',
+      message: 'No images found for this query!',
       color: 'yellow',
       position: 'topRight',
     });
@@ -68,7 +68,7 @@ searchForm.addEventListener('submit', async event => {
     if (data.hits.length === 0) {
       iziToast.show({
         title: 'Warning',
-        message: 'Please enter a search query!',
+        message: 'No images found for this query!',
         color: 'yellow',
         position: 'topRight',
       });

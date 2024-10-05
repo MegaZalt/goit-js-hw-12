@@ -5,12 +5,12 @@ let lightbox = null;
 
 export function renderGallery(hits) {
   const gallery = document.querySelector('.gallery');
-  const markup = images
-    .map(image => {
+  const markup = hits
+    .map(hit => {
       return `
-     <div class="gallery-item">
-          <img src="${hit.webformatURL}" alt="${hit.tags}" loading="lazy" />
-        </div>`;
+      <div class="gallery-item">
+           <img src="${hit.webformatURL}" alt="${hit.tags}" loading="lazy" />
+         </div>`;
     })
     .join('');
 
@@ -19,14 +19,15 @@ export function renderGallery(hits) {
 
 export function appendGallery(hits) {
   const gallery = document.querySelector('.gallery');
-  const markup = hits.map(hit => {
-    return `
+  const markup = hits
+    .map(hit => {
+      return `
      <div class="gallery-item">
           <img src="${hit.webformatURL}" alt="${hit.tags}" loading="lazy" />
         </div>
       `;
-  })
-  .join('');
+    })
+    .join('');
 
   gallery.insertAdjacentHTML('beforeend', markup);
 }
