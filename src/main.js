@@ -4,6 +4,7 @@ import iziToast from 'izitoast';
 import { fetchImages } from './js/pixabay-api.js';
 import { renderGallery, appendGallery } from './js/render-functions.js';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+import SimpleLightbox from 'simplelightbox';
 
 const searchForm = document.getElementById('searchForm');
 const gallery = document.querySelector('.gallery');
@@ -14,6 +15,7 @@ let currentQuery = '';
 let currentPage = 1;
 const perPage = 15;
 let totalHits = 0;
+let lightbox = null;
 
 function toggleLoader(isVisible) {
   if (isVisible) {
@@ -33,6 +35,7 @@ function toggleLoaderButton(isVisible) {
 
 function clearGallery() {
   gallery.innerHTML = '';
+  lightbox = null;
 }
 
 searchForm.addEventListener('submit', async event => {

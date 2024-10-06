@@ -15,6 +15,11 @@ export function renderGallery(hits) {
     .join('');
 
   gallery.innerHTML = markup;
+
+  lightbox = new SimpleLightbox('.gallery a', {
+    captionsData: 'alt',
+      captionDelay: 250,
+  });
 }
 
 export function appendGallery(hits) {
@@ -30,4 +35,13 @@ export function appendGallery(hits) {
     .join('');
 
   gallery.insertAdjacentHTML('beforeend', markup);
+
+  if(lightbox) {
+    lightbox.refresh();
+  } else {
+    lightbox = new SimpleLightbox('.gallery a', {
+      captionsData: 'alt',
+      captionDelay: 250,
+    });
+  }
 }
