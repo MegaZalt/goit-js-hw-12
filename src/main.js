@@ -166,3 +166,9 @@ function scrollPage() {
   }
 }
 
+function clearEndMessage() {
+  const endMessage = document.querySelector('.end-message');
+  if (endMessage) {
+    endMessage.remove();
+  }
+}
