@@ -152,16 +152,11 @@ function scrollPage() {
 }
 
 function showEndMessage() {
-  const message = document.createElement('p');
-  message.textContent =
-    "We're sorry, but you've reached the end of search results.";
-  message.classList.add('end-message');
-  gallery.appendChild(message);
+  iziToast.show({
+    title: 'End of Results',
+    message: "We're sorry, but you've reached the end of search results.",
+    color: 'blue',
+    position: 'topRight',
+  });
 }
 
-function clearEndMessage() {
-  const endMessage = document.querySelector('.end-message');
-  if (endMessage) {
-    endMessage.remove();
-  }
-}
