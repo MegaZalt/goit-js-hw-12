@@ -38,6 +38,15 @@ function clearGallery() {
   lightbox = null;
 }
 
+function showEndMessage() {
+  iziToast.show({
+    title: 'End of Results',
+    message: "We're sorry, but you've reached the end of search results.",
+    color: 'blue',
+    position: 'topRight',
+  });
+}
+
 searchForm.addEventListener('submit', async event => {
   event.preventDefault();
 
@@ -157,18 +166,3 @@ function scrollPage() {
   }
 }
 
-function showEndMessage() {
-  iziToast.show({
-    title: 'End of Results',
-    message: "We're sorry, but you've reached the end of search results.",
-    color: 'blue',
-    position: 'topRight',
-  });
-}
-
-function clearEndMessage() {
-  const endMessage = document.querySelector('.end-message');
-  if (endMessage) {
-    endMessage.remove();
-  }
-}
