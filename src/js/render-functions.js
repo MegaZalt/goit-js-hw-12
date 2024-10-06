@@ -16,12 +16,8 @@ export function renderGallery(hits) {
     })
     .join('');
 
-  gallery.innerHTML = markup;
-
-  lightbox = new SimpleLightbox('.gallery a', {
-    captionsData: 'alt',
-    captionDelay: 250,
-  });
+  gallery.innerHTML = markup
+  lightbox = new SimpleLightbox('.gallery a');
 }
 
 export function appendGallery(hits) {
