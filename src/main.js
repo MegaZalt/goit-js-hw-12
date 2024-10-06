@@ -118,6 +118,7 @@ loadMoreBtn.addEventListener('click', async () => {
 
   try {
     const data = await fetchImages(currentQuery, currentPage, perPage);
+    console.log(data.hits);
 
     if (data.hits.length > 0) {
       appendGallery(data.hits);
