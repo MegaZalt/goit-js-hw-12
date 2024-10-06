@@ -137,10 +137,16 @@ loadMoreBtn.addEventListener('click', async () => {
 
 function scrollPage() {
   const galleryItem = document.querySelector('.gallery-item');
-  if (galleryItem) {
-    const { height } = galleryItem.getBoundingClientRect();
+  if (galleryItem.length >= 2) {
+    const { height } = galleryItem[0].getBoundingClientRect();
     window.scrollBy({
       top: height * 2,
+      behavior: 'smooth',
+    });
+  } else if(galleryItem.length > 0) {
+    const {height} = galleryItem[0].getBoundingClientRect();
+    window.scrollBy({
+      top: height,
       behavior: 'smooth',
     });
   } else {
