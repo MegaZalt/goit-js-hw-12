@@ -9,7 +9,9 @@ export function renderGallery(hits) {
     .map(hit => {
       return `
       <div class="gallery-item">
+      <a href="${hit.largeImageURL}">
            <img src="${hit.webformatURL}" alt="${hit.tags}" loading="lazy" />
+           </a>
          </div>`;
     })
     .join('');
@@ -28,7 +30,9 @@ export function appendGallery(hits) {
     .map(hit => {
       return `
      <div class="gallery-item">
+     <a href="${hit.largeImageURL}">
           <img src="${hit.webformatURL}" alt="${hit.tags}" loading="lazy" />
+          </a>
         </div>
       `;
     })
