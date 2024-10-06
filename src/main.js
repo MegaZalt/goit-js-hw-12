@@ -160,3 +160,9 @@ function showEndMessage() {
   });
 }
 
+function clearEndMessage() {
+  const endMessage = document.querySelector('.end-message');
+  if (endMessage) {
+    endMessage.remove();
+  }
+}
