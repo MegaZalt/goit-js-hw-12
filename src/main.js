@@ -4,7 +4,6 @@ import iziToast from 'izitoast';
 import { fetchImages } from './js/pixabay-api.js';
 import { renderGallery, appendGallery } from './js/render-functions.js';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import SimpleLightbox from 'simplelightbox';
 
 const searchForm = document.getElementById('searchForm');
 const gallery = document.querySelector('.gallery');
@@ -16,6 +15,8 @@ let currentPage = 1;
 const perPage = 15;
 let totalHits = 0;
 let lightbox = null;
+const perPageFirstLoad = 20;
+const perPageNextLoads = 15;
 
 function toggleLoader(isVisible) {
   if (isVisible) {
@@ -72,8 +73,10 @@ searchForm.addEventListener('submit', async event => {
 
   toggleLoader(true);
   toggleLoaderButton(false);
+ 
 
   try {
+    const perPage = currentPage === 1 ? perPageFirstLoad : perPageNextLoads;
     const data = await fetchImages(currentQuery, currentPage, perPage);
     totalHits = data.totalHits;
 
@@ -84,12 +87,11 @@ searchForm.addEventListener('submit', async event => {
         color: 'yellow',
         position: 'topRight',
       });
-      toggleLoaderButton(false);
+       // toggleLoaderButton(false);
       return;
     }
 
     renderGallery(data.hits);
-    
     currentPage++;
 
     if (currentPage * perPage < totalHits) {
@@ -102,6 +104,7 @@ searchForm.addEventListener('submit', async event => {
     scrollPage();
   } catch (error) {
     console.error(error);
+    
     iziToast.show({
       title: 'Error',
       message: 'Failed to load images!',
@@ -127,7 +130,7 @@ loadMoreBtn.addEventListener('click', async () => {
       scrollPage();
     }
 
-    if (currentPage * perPage >= totalHits) {
+    if (currentPage * perPage > totalHits) {
       toggleLoaderButton(false);
       showEndMessage();
     } else {
