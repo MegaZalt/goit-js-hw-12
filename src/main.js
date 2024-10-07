@@ -13,7 +13,6 @@ const loadMoreBtn = document.getElementById('loadMoreBtn');
 let currentQuery = '';
 let currentPage = 1;
 const perPage = 15;
-const maxPages = 2;
 let totalHits = 0;
 let lightbox = null;
 
@@ -76,7 +75,6 @@ searchForm.addEventListener('submit', async event => {
         color: 'yellow',
         position: 'topRight',
       });
-       //toggleLoaderButton(false);
       return;
     }
 
@@ -86,7 +84,7 @@ searchForm.addEventListener('submit', async event => {
     if (currentPage * perPage < totalHits) {
       toggleLoaderButton(true);
     } else {
-      //toggleLoaderButton(false);
+      toggleLoaderButton(false);
       showEndMessage();
     }
 
@@ -109,20 +107,24 @@ loadMoreBtn.addEventListener('click', async () => {
   toggleLoaderButton(false);
 
   try {
-    const data = await fetchImages(currentQuery, currentPage, perPage);
+    const data = await fetchImages(currentQuery, currentPage, 15);
 
     if (data.hits.length > 0) {
       appendGallery(data.hits);
       currentPage++;
-      scrollPage();
+      // scrollPage();
+
+      if (currentPage * perPage > totalHits) {
+        showEndMessage();
+        toggleLoaderButton(false);
+      } else {
+        toggleLoaderButton(true);
+      } 
+    } else {
+      showEndMessage();
     }
 
-    if (currentPage * perPage > totalHits) {
-      showEndMessage();
-      toggleLoaderButton(false);
-    } else {
-      toggleLoaderButton(true);
-    }
+
   } catch (error) {
     console.error('Error loading more images:', error);
     iziToast.show({
