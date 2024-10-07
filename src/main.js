@@ -79,7 +79,6 @@ searchForm.addEventListener('submit', async event => {
     }
 
     renderGallery(data.hits);
-    currentPage++;
 
     if (currentPage * perPage < totalHits) {
       toggleLoaderButton(true);
