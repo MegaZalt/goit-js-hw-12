@@ -1,4 +1,3 @@
-// pixabay
 import axios from 'axios';
 
 const API_KEY = '46143804-c250369a659784c87f3539553';
@@ -14,12 +13,13 @@ export async function fetchImages(query, page = 1, perPage = 15) {
         orientation: 'horizontal',
         safesearch: true,
         page: page,
-        per_page: perPage,
+        per_page: perPage, 
       },
     });
     return response.data;
   } catch (error) {
     console.log('Error fetching images:', error);
-    throw error;
+    throw error; 
   }
 }
+
