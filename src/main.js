@@ -15,23 +15,13 @@ let currentPage = 1;
 const perPage = 15;
 let totalHits = 0;
 let lightbox = null;
-const perPageFirstLoad = 20;
-const perPageNextLoads = 15;
 
 function toggleLoader(isVisible) {
-  if (isVisible) {
-    loader.classList.remove('hidden');
-  } else {
-    loader.classList.add('hidden');
-  }
+  loader.style.display = isVisible ? 'block' : 'none';
 }
 
 function toggleLoaderButton(isVisible) {
-  if (isVisible) {
-    loadMoreBtn.classList.remove('hidden');
-  } else {
-    loadMoreBtn.classList.add('hidden');
-  }
+  loadMoreBtn.style.display = isVisible ? 'block' : 'none';
 }
 
 function clearGallery() {
@@ -52,7 +42,6 @@ searchForm.addEventListener('submit', async event => {
   event.preventDefault();
 
   const query = document.getElementById('query').value.trim();
-
   clearEndMessage();
 
   if (query !== currentQuery) {
@@ -76,7 +65,6 @@ searchForm.addEventListener('submit', async event => {
  
 
   try {
-    const perPage = currentPage === 1 ? perPageFirstLoad : perPageNextLoads;
     const data = await fetchImages(currentQuery, currentPage, perPage);
     totalHits = data.totalHits;
 
@@ -87,7 +75,7 @@ searchForm.addEventListener('submit', async event => {
         color: 'yellow',
         position: 'topRight',
       });
-       // toggleLoaderButton(false);
+       //toggleLoaderButton(false);
       return;
     }
 
@@ -97,14 +85,13 @@ searchForm.addEventListener('submit', async event => {
     if (currentPage * perPage < totalHits) {
       toggleLoaderButton(true);
     } else {
-      toggleLoaderButton(false);
+      //toggleLoaderButton(false);
       showEndMessage();
     }
 
     scrollPage();
   } catch (error) {
     console.error(error);
-    
     iziToast.show({
       title: 'Error',
       message: 'Failed to load images!',
@@ -122,7 +109,6 @@ loadMoreBtn.addEventListener('click', async () => {
 
   try {
     const data = await fetchImages(currentQuery, currentPage, perPage);
-    console.log(data.hits);
 
     if (data.hits.length > 0) {
       appendGallery(data.hits);
@@ -131,8 +117,8 @@ loadMoreBtn.addEventListener('click', async () => {
     }
 
     if (currentPage * perPage > totalHits) {
-      toggleLoaderButton(false);
       showEndMessage();
+      toggleLoaderButton(false);
     } else {
       toggleLoaderButton(true);
     }
@@ -151,16 +137,10 @@ loadMoreBtn.addEventListener('click', async () => {
 
 function scrollPage() {
   const galleryItem = document.querySelectorAll('.gallery-item');
-  if (galleryItem.length >= 2) {
+  if (galleryItem.length > 0) {
     const { height } = galleryItem[0].getBoundingClientRect();
     window.scrollBy({
       top: height * 2,
-      behavior: 'smooth',
-    });
-  } else if(galleryItem.length > 0) {
-    const {height} = galleryItem[0].getBoundingClientRect();
-    window.scrollBy({
-      top: height,
       behavior: 'smooth',
     });
   } else {
