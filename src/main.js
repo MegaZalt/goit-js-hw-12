@@ -13,6 +13,7 @@ const loadMoreBtn = document.getElementById('loadMoreBtn');
 let currentQuery = '';
 let currentPage = 1;
 const perPage = 15;
+const maxPages = 2;
 let totalHits = 0;
 let lightbox = null;
 
