@@ -104,26 +104,19 @@ searchForm.addEventListener('submit', async event => {
 loadMoreBtn.addEventListener('click', async () => {
   toggleLoader(true);
   toggleLoaderButton(false);
+  currentPage++;
 
   try {
-    const data = await fetchImages(currentQuery, currentPage, 15);
+    const data = await fetchImages(currentQuery, currentPage, perPage);
 
-    if (data.hits.length > 0) {
-      appendGallery(data.hits);
-      currentPage++;
-      // scrollPage();
+    appendGallery(data.hits);
 
-      if (currentPage * perPage > totalHits) {
-        showEndMessage();
-        toggleLoaderButton(false);
-      } else {
-        toggleLoaderButton(true);
-      } 
-    } else {
+    if (currentPage * perPage > totalHits) {
       showEndMessage();
-    }
-
-
+      toggleLoaderButton(false); 
+    } else {
+      toggleLoaderButton(true); 
+    } 
   } catch (error) {
     console.error('Error loading more images:', error);
     iziToast.show({
@@ -133,9 +126,10 @@ loadMoreBtn.addEventListener('click', async () => {
       position: 'topRight',
     });
   } finally {
-    toggleLoader(false);
+    toggleLoader(false); 
   }
 });
+
 
 function scrollPage() {
   const galleryItem = document.querySelectorAll('.gallery-item');
