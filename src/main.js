@@ -177,3 +177,4 @@ function clearEndMessage() {
     endMessage.remove();
   }
 }
+
